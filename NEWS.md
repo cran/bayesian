@@ -1,3 +1,12 @@
+# bayesian 0.0.3
+
+- Added CITATION and updated package DESCRIPTION
+- Added fit wrapper and other helper functions
+- Renamed the current engine from `stan` to `brms`
+- Updated manual, logo, WORDLIST, and NEWS
+- Fixed a CRAN NOTE regarding LazyData
+- Updated lifecycle URL in the README
+
 # bayesian 0.0.2
 
 - Added `bayesian_read` and `bayesian_write` functions

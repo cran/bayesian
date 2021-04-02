@@ -1,16 +1,20 @@
 Package: bayesian
 Type: Package
-Version: 0.0.2
+Version: 0.0.3
 Title: Bindings for Bayesian TidyModels
 Authors@R: 
     c(person(given = "Hamada S.",
              family = "Badr",
              role = c("aut", "cre"),
              email = "badr@jhu.edu",
-             comment = c(ORCID = "0000-0002-9808-2344")))
-Description: Fit Bayesian models using 'brms'/'Stan' with 'parsnip'/'tidymodels'.
-    'tidymodels' is a collection of packages for machine learning, developed
-    by Wickham (2020) <https://www.tidymodels.org>).
+             comment = c(ORCID = "0000-0002-9808-2344")),
+      person(given = "Paul C.",
+             family = "Bürkner",
+             email = "paul.buerkner@gmail.com",
+             role = c("aut")))
+Description: Fit Bayesian models using 'brms'/'Stan' with 'parsnip'/'tidymodels'
+    via 'bayesian' <doi:10.5281/zenodo.4430991>. 'tidymodels' is a collection of
+    packages for machine learning; see Wickham (2020) <https://www.tidymodels.org>).
     The technical details of 'brms' and 'Stan' are described in Bürkner (2017)
     <doi:10.18637/jss.v080.i01>, Bürkner (2018) <doi:10.32614/RJ-2018-017>,
     and Carpenter et al. (2017) <doi:10.18637/jss.v076.i01>.
@@ -27,12 +31,12 @@ Encoding: UTF-8
 RoxygenNote: 7.1.1
 Collate: 'bayesian_init.R' 'bayesian_load.R' 'bayesian_make.R'
         'bayesian.R'
-LazyData: yes
 LazyLoad: yes
 Language: en-US
 NeedsCompilation: no
-Packaged: 2021-01-11 00:10:40 UTC; runner
-Author: Hamada S. Badr [aut, cre] (<https://orcid.org/0000-0002-9808-2344>)
+Packaged: 2021-04-02 13:14:42 UTC; hbadr1
+Author: Hamada S. Badr [aut, cre] (<https://orcid.org/0000-0002-9808-2344>),
+  Paul C. Bürkner [aut]
 Maintainer: Hamada S. Badr <badr@jhu.edu>
 Repository: CRAN
-Date/Publication: 2021-01-14 08:20:02 UTC
+Date/Publication: 2021-04-02 13:40:02 UTC

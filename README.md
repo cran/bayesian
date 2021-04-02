@@ -6,12 +6,14 @@ bayesian: Bindings for Bayesian TidyModels [<img src="man/figures/bayesian.png" 
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Codecov Test
+Coverage](https://codecov.io/gh/hsbadr/bayesian/branch/main/graph/badge.svg)](https://codecov.io/gh/hsbadr/bayesian?branch=main)
 [![Last
 commit](https://img.shields.io/github/last-commit/hsbadr/bayesian)](https://github.com/hsbadr/bayesian/commits/main)
 [![Commits since
-release](https://img.shields.io/github/commits-since/hsbadr/bayesian/0.0.1.svg?color=green)](https://GitHub.com/hsbadr/bayesian/commit/main/)
-[![R-CMD-check](https://github.com/hsbadr/bayesian/workflows/R-CMD-check/badge.svg)](https://github.com/hsbadr/bayesian/actions)
+release](https://img.shields.io/github/commits-since/hsbadr/bayesian/latest.svg?color=green)](https://GitHub.com/hsbadr/bayesian/commit/main/)
+[![R](https://github.com/hsbadr/bayesian/workflows/R/badge.svg)](https://github.com/hsbadr/bayesian/actions)
 
 [![CRAN
 Status](https://www.r-pkg.org/badges/version/bayesian)](https://CRAN.R-project.org/package=bayesian)
@@ -19,8 +21,6 @@ Status](https://www.r-pkg.org/badges/version/bayesian)](https://CRAN.R-project.o
 Downloads](http://cranlogs.r-pkg.org/badges/grand-total/bayesian)](https://cran.r-project.org/package=bayesian)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/hsbadr/bayesian/blob/main/LICENSE.md)
-[![Codecov Test
-Coverage](https://codecov.io/gh/hsbadr/bayesian/branch/main/graph/badge.svg)](https://codecov.io/gh/hsbadr/bayesian?branch=main)
 [![DOI](https://zenodo.org/badge/327419436.svg)](https://zenodo.org/badge/latestdoi/327419436)
 <!-- badges: end -->
 
@@ -53,13 +53,25 @@ Example
 
     bayesian_mod <-
       bayesian() %>%
-      set_engine("stan") %>%
+      set_engine("brms") %>%
       fit(
         rating ~ treat + period + carry + (1 | subject),
         data = inhaler
       )
 
     summary(bayesian_mod$fit)
+
+Citation
+--------
+
+To cite `bayesian` in publications, please use:
+
+    citation("bayesian")
+
+> Hamada S. Badr and Paul C. Bürkner (2021): bayesian: Bindings for
+> Bayesian TidyModels, [*Comprehensive R Archive Network
+> (CRAN)*](https://cran.r-project.org/package=bayesian), DOI:
+> [10.5281/zenodo.4430991](https://doi.org/10.5281/zenodo.4430991).
 
 Contributing
 ------------

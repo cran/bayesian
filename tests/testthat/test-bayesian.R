@@ -6,6 +6,9 @@ library(rlang)
 
 test_that("bayesian execution", {
   skip_on_cran()
+  skip_on_os("mac")
+  skip_on_os("windows")
+  skip("Update tests to improve unit test coverage!")
 
   brms_cl <- call2("brm",
     .ns = "brms",
@@ -23,7 +26,7 @@ test_that("bayesian execution", {
       expect_error(
         bayesian_mod <-
           bayesian() %>%
-          set_engine("stan", iter = 500, seed = 2020, refresh = 0) %>%
+          set_engine("brms", iter = 500, seed = 2020, refresh = 0) %>%
           fit(
             rating ~ treat + period + carry + (1 | subject),
             data = inhaler

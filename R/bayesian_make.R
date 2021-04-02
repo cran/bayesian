@@ -14,19 +14,19 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     # -------------------------------------------------------------------------
 
-    parsnip::set_model_engine("bayesian", mode, "stan")
+    parsnip::set_model_engine("bayesian", mode, "brms")
 
-    parsnip::set_dependency("bayesian", "stan", "brms")
-    parsnip::set_dependency("bayesian", "stan", "bayesian")
+    parsnip::set_dependency("bayesian", "brms", "brms")
+    parsnip::set_dependency("bayesian", "brms", "bayesian")
 
     parsnip::set_fit(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       value = list(
         interface = "formula",
         protect = c("formula", "data"),
-        func = c(pkg = "brms", fun = "brm"),
+        func = c(pkg = "bayesian", fun = "bayesian_fit"),
         defaults = list(
           family = if (mode == "classification") {
             rlang::expr(brms::brmsfamily("binomial"))
@@ -39,7 +39,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     parsnip::set_encoding(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       options = list(
         predictor_indicators = "traditional",
@@ -52,7 +52,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
     if (mode == "classification") {
       parsnip::set_pred(
         model = "bayesian",
-        eng = "stan",
+        eng = "brms",
         mode = mode,
         type = "class",
         value = list(
@@ -70,7 +70,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
             ) {
               results <- object$lvl[apply(results, 1, which.max)]
             } else {
-              stop("Unexpected model predictions!")
+              rlang::abort("Unexpected model predictions!")
             }
             unname(results)
           },
@@ -86,7 +86,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
       parsnip::set_pred(
         model = "bayesian",
-        eng = "stan",
+        eng = "brms",
         mode = mode,
         type = "prob",
         value = list(
@@ -104,7 +104,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
             ) {
               colnames(results) <- object$lvl
             } else {
-              stop("Unexpected model predictions!")
+              rlang::abort("Unexpected model predictions!")
             }
             results
           },
@@ -120,7 +120,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
     } else {
       parsnip::set_pred(
         model = "bayesian",
-        eng = "stan",
+        eng = "brms",
         mode = mode,
         type = "numeric",
         value = list(
@@ -140,7 +140,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     parsnip::set_pred(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       type = "conf_int",
       value = list(
@@ -201,7 +201,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     parsnip::set_pred(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       type = "pred_int",
       value = list(
@@ -262,7 +262,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     parsnip::set_pred(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       type = "raw",
       value = list(
@@ -280,7 +280,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
 
     parsnip::set_pred(
       model = "bayesian",
-      eng = "stan",
+      eng = "brms",
       mode = mode,
       type = "quantile",
       value = list(
