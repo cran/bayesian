@@ -1,3 +1,21 @@
+# bayesian 0.0.4
+
+- Added GettingStarted vignette
+- Added `rstan` & `future` to suggested packages
+- Added `formula.override` argument to model specification
+- Added `family` argument to model specification
+- Added `threads` argument to model specification
+- Added `stan_args` to pass extra arguments to `Stan`
+- Implemented `parsnip::set_model_arg`
+- Switched to engine-specific defaults
+- Fixed NOTE: Undeclared packages `rstan`, `future` in Rd xrefs
+- Fixed NOTE: Found (possibly) invalid URLs
+- Fixed building vignettes
+- Support updating more `brms::brm` arguments in model specification
+- Updated documentation and vignettes
+- Updated WORDLIST
+- Minor code cleanup
+
 # bayesian 0.0.3
 
 - Added CITATION and updated package DESCRIPTION
