@@ -1,5 +1,5 @@
 ---
-title: "Get started with the bayesian package"
+title: "Get started with `bayesian`"
 author: "Paul-Christian Bürkner & Hamada S. Badr"
 date: "`r Sys.Date()`"
 output:
@@ -11,10 +11,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r}
+```{r results='hide', message=FALSE, warning=FALSE}
+library(bayesian)
+```
+
+```{r results='hide', message=FALSE, warning=FALSE}
 library(recipes)
 library(workflows)
-library(bayesian)
 ```
 
 As a simple example, we will model the seizure counts in epileptic patients to
@@ -28,7 +31,7 @@ for) the `epilepsy` data. This data set is shipped with the `brms` package,
 which is automatically loaded by `bayesian`.
 
 ```{r}
-epi_recipe <- epilepsy %>% 
+epi_recipe <- epilepsy %>%
   recipe() %>%
   update_role(count, new_role = "outcome") %>%
   update_role(Trt, Age, Base, patient, new_role = "predictor") %>%
@@ -40,12 +43,14 @@ epi_recipe <- epilepsy %>%
 print(epi_recipe)
 ```
 
-Above, we not only define the roles of the relevant variables but also 
+Above, we not only define the roles of the relevant variables but also
 normalized the `Age` and `Base` predictors to facilitate model fitting later
 on. In the next step, we use `bayesian` to set up a basic model structure.
 
 ```{r}
-epi_model <- bayesian(family = poisson()) %>%
+epi_model <- bayesian(
+    family = poisson()
+  ) %>%
   set_engine("brms") %>%
   set_mode("regression")
 ```
@@ -58,7 +63,7 @@ The `bayesian` function is the main function of the package to initialize a
 Bayesian model. We can set up a lot of the information directly within the
 function or update the information later on, via the `update` method. For
 example, if we didn't specify the family initially or set it to something else
-that we now wanted to change, we could write:
+that we now wanted to change, we could use the `update` method as follows
 
 ````{r}
 epi_model <- epi_model %>%
@@ -85,27 +90,49 @@ print(epi_workflow)
 We are now ready to fit the model by calling the `fit` method
 with the data set we want to train the model on.
 
-```{r, results='hide', echo = FALSE}
+```{r results='hide', echo = FALSE}
 run_on_linux <- grepl("linux", R.Version()$os, ignore.case = TRUE)
 ```
 
-```{r, results='hide', eval = run_on_linux}
+```{r results='hide', eval = run_on_linux}
 epi_workflow_fit <- epi_workflow %>%
   fit(data = epilepsy)
 ```
 
-```{r, eval = run_on_linux}
+```{r eval = run_on_linux}
 print(epi_workflow_fit)
 ```
 
-We can use the workflow including the fitted model, for example, for
-convenient predictions with new data without having to worry about all
-the data reprocessing.
+To extract the parsnip model fit from the workflow
+
+```{r eval = run_on_linux}
+epi_fit <- epi_workflow_fit %>%
+  pull_workflow_fit()
+```
+
+The `brmsfit` object is stored in the `fit` slot
+
+```{r eval = run_on_linux}
+epi_brmsfit <- epi_fit$fit
+```
+
+```{r eval = run_on_linux}
+class(epi_brmsfit)
+```
+
+We can use the trained workflow, which includes the fitted model, to
+conveniently `predict` using new data without having to worry about all
+the data reprocessing, which is automatically applied using the workflow
+preprocessor (recipe).
 
 ```{r}
 newdata <- epilepsy[1:5, ]
 ```
 
-```{r, eval = run_on_linux}
-epi_workflow_fit %>% predict(new_data = newdata, type = "conf_int")
+```{r eval = run_on_linux}
+epi_workflow_fit %>%
+  predict(
+    new_data = newdata,
+    type = "conf_int"
+  )
 ```

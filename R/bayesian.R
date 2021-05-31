@@ -2,7 +2,7 @@
 #'
 #' `bayesian()` is a way to generate a _specification_ of a model
 #'  before fitting and allows the model to be created using
-#'  \pkg{Stan} via \pkg{brms} package in R.
+#'  \pkg{Stan} via \pkg{brms} package in \pkg{R}.
 #'
 #'  The arguments are converted to their specific names at the
 #'  time that the model is fit. Other options and argument can be
@@ -332,41 +332,61 @@ check_args.bayesian <- function(object) {
 #' @rdname bayesian
 #' @export
 bayesian_fit <- function(formula, data, ...) {
-  dots <- list(...)
+  dots <- list(formula = formula, data = rlang::enquo(data), ...)
 
   # Override the formula, if needed
-  if (inherits(
-    dots$formula.override,
-    c("brmsformula", "formula")
-  )) {
-    dots$formula <- dots$formula.override
-  } else if (inherits(
-    formula,
-    c("brmsformula", "formula")
-  )) {
-    dots$formula <- formula
-  } else {
-    rlang::abort("Unsupported or invalid formula!")
+  if (!is.null(dots$formula.override)) {
+    if (inherits(
+      dots$formula.override,
+      c("formula", "list")
+    )) {
+      dots$formula <- dots$formula.override
+    } else {
+      rlang::abort("Unsupported or invalid formula.override!")
+    }
   }
   dots$formula.override <- NULL
+
+  # Simplify and expose the family call
+  if (inherits(dots$family, c("family", "brmsfamily"))) {
+    family_chr <- purrr::map_lgl(dots$family, is.character)
+    family_func <- ifelse(
+      inherits(dots$family, "brmsfamily"),
+      "brmsfamily",
+      dots$family$family
+    )
+    family_fmls <- rlang::fn_fmls_names(
+      get(
+        family_func,
+        mode = "function"
+      )
+    )
+    family_chrs <- intersect(names(family_chr[family_chr]), family_fmls)
+    family_args <- dots$family[family_chrs]
+    dots$family <- rlang::call2(family_func, !!!family_args)
+  }
 
   # Pass extra arguments to Stan
   dots <- append(dots, dots$stan_args)
   dots$stan_args <- NULL
 
-  # Fit or update the model
+  # Create the fit call
   if (brms::is.brmsfit(dots$fit)) {
     dots$object <- dots$fit
     dots$fit <- NULL
-    update.brmsfit <- utils::getFromNamespace("update.brmsfit", "brms")
-    brms::do_call(update.brmsfit, dots)
+    dots$data <- NULL
+
+    fitcall <- rlang::call2("update", !!!dots, .ns = "stats")
   } else {
-    dots$data <- data
     dots$formula. <- NULL
     dots$newdata <- NULL
     dots$recompile <- NULL
-    brms::do_call(brms::brm, dots)
+
+    fitcall <- rlang::call2("brm", !!!dots, .ns = "brms")
   }
+
+  # Evaluate the fit call
+  rlang::eval_tidy(fitcall)
 }
 
 # -------------------------------------------------------------------------

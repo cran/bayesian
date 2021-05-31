@@ -1,18 +1,18 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-bayesian: Bindings for Bayesian TidyModels [<img src="man/figures/bayesian.png" align="right" width="160" alt="bayesian logo" />](https://hsbadr.github.io/bayesian/)
-=====================================================================================================================================================================
+Bindings for Bayesian TidyModels [<img src="man/figures/bayesian.png" align="right" width="160" alt="bayesian logo" />](https://hsbadr.github.io/bayesian/)
+===========================================================================================================================================================
 
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+Stable](https://img.shields.io/badge/Lifecycle-Stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Codecov Test
 Coverage](https://codecov.io/gh/hsbadr/bayesian/branch/main/graph/badge.svg)](https://codecov.io/gh/hsbadr/bayesian?branch=main)
 [![Last
 commit](https://img.shields.io/github/last-commit/hsbadr/bayesian)](https://github.com/hsbadr/bayesian/commits/main)
 [![Commits since
-release](https://img.shields.io/github/commits-since/hsbadr/bayesian/latest.svg?color=green)](https://GitHub.com/hsbadr/bayesian/commit/main/)
+release](https://img.shields.io/github/commits-since/hsbadr/bayesian/latest.svg?color=green)](https://github.com/hsbadr/bayesian/commit/main/)
 [![R](https://github.com/hsbadr/bayesian/workflows/R/badge.svg)](https://github.com/hsbadr/bayesian/actions)
 
 [![CRAN
@@ -43,8 +43,8 @@ The development version of
 [`bayesian`](https://hsbadr.github.io/bayesian/) can be installed from
 [GitHub](https://github.com/hsbadr/bayesian) using:
 
-    install.packages("remotes")
-    remotes::install_github("hsbadr/bayesian")
+    install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
+    pak::pkg_install("hsbadr/bayesian")
 
 Example
 -------
@@ -61,6 +61,9 @@ Example
 
     summary(bayesian_mod$fit)
 
+For more details, [get started with
+`bayesian`](https://hsbadr.github.io/bayesian/articles/GetStarted.html).
+
 Citation
 --------
 
@@ -71,7 +74,7 @@ To cite `bayesian` in publications, please use:
 > Hamada S. Badr and Paul C. Bürkner (2021): bayesian: Bindings for
 > Bayesian TidyModels, [*Comprehensive R Archive Network
 > (CRAN)*](https://cran.r-project.org/package=bayesian), DOI:
-> [10.5281/zenodo.4430991](https://doi.org/10.5281/zenodo.4430991).
+> [10.5281/zenodo.4882780](https://doi.org/10.5281/zenodo.4882780).
 
 Contributing
 ------------

@@ -2,8 +2,8 @@
 #' @import parsnip
 #' @importFrom dplyr bind_cols
 #' @importFrom purrr map_lgl
-#' @importFrom rlang abort enquo expr
-#' @importFrom stats sd
+#' @importFrom rlang !!! abort call2 enquo eval_tidy expr fn_fmls_names
+#' @importFrom stats sd update
 #' @importFrom tibble as_tibble tibble
 #' @importFrom utils globalVariables getFromNamespace
 

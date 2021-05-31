@@ -283,7 +283,7 @@ An updated model specification.
 \description{
 \code{bayesian()} is a way to generate a \emph{specification} of a model
 before fitting and allows the model to be created using
-\pkg{Stan} via \pkg{brms} package in R.
+\pkg{Stan} via \pkg{brms} package in \pkg{R}.
 }
 \details{
 The arguments are converted to their specific names at the
