@@ -68,6 +68,16 @@ newdata <- epilepsy[1:5, ]
 epi_workflow_fit %>%
   predict(
     new_data = newdata,
-    type = "conf_int"
+    type = "conf_int",
+    level = 0.95
+  )
+
+## ----eval = run_on_linux------------------------------------------------------
+epi_workflow_fit %>%
+  predict(
+    new_data = newdata,
+    type = "conf_int",
+    level = 0.95,
+    std_error = TRUE
   )
 
