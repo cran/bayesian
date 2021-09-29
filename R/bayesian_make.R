@@ -307,8 +307,19 @@ bayesian_make <- function(modes = c("classification", "regression")) {
           pre = NULL,
           post = function(results, object) {
             if (length(object$lvl) == 2) {
+              if (is.array(results)) {
+                results <- as.vector(results)
+              }
+              threshold <- getOption("class_pred.threshold", 0.5)
+              if (is.numeric(threshold)) {
+                if (threshold < 0 & threshold > 1) {
+                  rlang::abort("Probability threshold is out of 0-1 range.")
+                }
+              } else {
+                rlang::abort("Probability threshold should be numeric.")
+              }
               results <- ifelse(
-                results[, 1] >= 0.5,
+                results[, 1] >= threshold,
                 object$lvl[2],
                 object$lvl[1]
               )

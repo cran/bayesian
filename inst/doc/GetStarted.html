@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul-Christian Bürkner &amp; Hamada S. Badr" />
 
-<meta name="date" content="2021-07-12" />
+<meta name="date" content="2021-09-29" />
 
 <title>Get started with bayesian</title>
 
@@ -112,7 +112,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Get started with <code>bayesian</code></h1>
 <h4 class="author">Paul-Christian Bürkner &amp; Hamada S. Badr</h4>
-<h4 class="date">2021-07-12</h4>
+<h4 class="date">2021-09-29</h4>
 
 
 
@@ -127,7 +127,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="st">  </span><span class="kw">add_role</span>(patient, <span class="dt">new_role =</span> <span class="st">&quot;group&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">step_normalize</span>(Age, Base)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(epi_recipe)</code></pre></div>
-<pre><code>## Data Recipe
+<pre><code>## Recipe
 ## 
 ## Inputs:
 ## 
@@ -201,29 +201,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ##   Links: mu = log 
 ## Formula: count ~ Trt + Base + Age + (1 | patient) 
 ##    Data: ~data (Number of observations: 236) 
-## Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
-##          total post-warmup samples = 4000
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
 ## 
 ## Group-Level Effects: 
 ## ~patient (Number of levels: 59) 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.57      0.07     0.45     0.72 1.00      703     1350
+## sd(Intercept)     0.58      0.07     0.46     0.72 1.00      890     1522
 ## 
 ## Population-Level Effects: 
 ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept     1.77      0.12     1.54     2.01 1.00      656     1124
-## Trt1         -0.27      0.17    -0.61     0.05 1.00      682      886
-## Base          0.73      0.08     0.58     0.90 1.00      660     1222
-## Age           0.09      0.09    -0.08     0.27 1.01      569      970
+## Intercept     1.78      0.12     1.55     2.00 1.01      683     1247
+## Trt1         -0.27      0.17    -0.60     0.05 1.00      626     1142
+## Base          0.73      0.08     0.57     0.89 1.00      809     1323
+## Age           0.08      0.08    -0.07     0.24 1.00      755     1475
 ## 
-## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>To extract the parsnip model fit from the workflow</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_fit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">pull_workflow_fit</span>()</code></pre></div>
-<pre><code>## Warning: `pull_workflow_fit()` was deprecated in workflows 0.2.3.
-## Please use `extract_fit_parsnip()` instead.</code></pre>
+<span class="st">  </span><span class="kw">extract_fit_parsnip</span>()</code></pre></div>
 <p>The <code>brmsfit</code> object is stored in the <code>fit</code> slot</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_brmsfit &lt;-<span class="st"> </span>epi_fit<span class="op">$</span>fit</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(epi_brmsfit)</code></pre></div>
@@ -236,7 +234,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="dt">type =</span> <span class="st">&quot;conf_int&quot;</span>,
     <span class="dt">level =</span> <span class="fl">0.95</span>
   )</code></pre></div>
-<pre><code>## # A tibble: 5 x 2
+<pre><code>## # A tibble: 5 × 2
 ##   .pred_lower .pred_upper
 ##         &lt;dbl&gt;       &lt;dbl&gt;
 ## 1           0           8
@@ -252,14 +250,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="dt">level =</span> <span class="fl">0.95</span>,
     <span class="dt">std_error =</span> <span class="ot">TRUE</span>
   )</code></pre></div>
-<pre><code>## # A tibble: 5 x 3
+<pre><code>## # A tibble: 5 × 3
 ##   .pred_lower .pred_upper .std_error
 ##         &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
-## 1           0           8       2.09
-## 2           0           8       2.09
-## 3           0           7       1.86
-## 4           0           8       1.97
-## 5           6          23       4.16</code></pre>
+## 1           0           8       2.05
+## 2           0           8       2.10
+## 3           0           7       1.83
+## 4           0           8       2.05
+## 5           6          22       4.09</code></pre>
 
 
 
