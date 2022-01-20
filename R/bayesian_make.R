@@ -28,7 +28,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
     # -------------------------------------------------------------------------
 
     for (pkg in dependpkgs) {
-      parsnip::set_dependency(model = model, eng = engine, pkg = pkg)
+      if ("mode" %in% rlang::fn_fmls_names(parsnip::set_dependency)) {
+        parsnip::set_dependency(model, engine, pkg = pkg, mode = mode)
+      } else {
+        parsnip::set_dependency(model, engine, pkg = pkg)
+      }
     }
 
     # -------------------------------------------------------------------------
@@ -306,13 +310,18 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             if (length(object$lvl) == 2) {
               if (is.array(results)) {
                 results <- as.vector(results)
               }
               threshold <- getOption("class_pred.threshold", 0.5)
               if (is.numeric(threshold)) {
-                if (threshold < 0 & threshold > 1) {
+                if (!dplyr::between(threshold, 0, 1)) {
                   rlang::abort("Probability threshold is out of 0-1 range.")
                 }
               } else {
@@ -350,6 +359,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             if (length(object$lvl) == 2) {
               results <- tibble::tibble(
                 v1 = 1 - results[, 1],
@@ -383,6 +397,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             res_2 <-
               tibble::tibble(
                 lo = parsnip::convert_stan_interval(
@@ -424,6 +443,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             res_2 <-
               tibble::tibble(
                 lo = parsnip::convert_stan_interval(
@@ -466,6 +490,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             tibble::tibble(.pred = results[, 1])
           },
           func = predfunc,
@@ -485,6 +514,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             res <-
               tibble::tibble(
                 .pred_lower = parsnip::convert_stan_interval(
@@ -520,6 +554,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         value = list(
           pre = NULL,
           post = function(results, object) {
+            if (length(dim(results)) != 2) {
+              rlang::warn('Use `type = "raw"` for multivariate predictions!')
+              return(results)
+            }
+
             res <-
               tibble::tibble(
                 .pred_lower = parsnip::convert_stan_interval(
@@ -559,8 +598,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
         func = predfunc,
         args = list(
           object = rlang::expr(object$fit),
-          newdata = rlang::expr(new_data),
-          summary = FALSE
+          newdata = rlang::expr(new_data)
         )
       )
     )
@@ -573,6 +611,11 @@ bayesian_make <- function(modes = c("classification", "regression")) {
       value = list(
         pre = NULL,
         post = function(results, object) {
+          if (length(dim(results)) != 2) {
+            rlang::warn('Use `type = "raw"` for multivariate predictions!')
+            return(results)
+          }
+
           tibble::as_tibble(results)
         },
         func = predfunc,

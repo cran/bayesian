@@ -1,3 +1,16 @@
+# bayesian 0.0.8
+
+- Updated package website
+- Updated package `CITATION`
+- Updated package `DESCRIPTION` and `README`
+- Updated package dependencies
+- Added preliminary support for multivariate non-linear models (#7)
+- Fixed possibly invalid URLs
+- Fixed `type = "raw"` predictions for multivariate non-linear models (#7)
+- Handled `mvbrmsformula` class in `bayesian_formula` (#7)
+- Fixed threshold probability check for class predictions
+- Set dependency by model's mode with `parsnip > 0.1.7`
+
 # bayesian 0.0.7
 
 - Fixed `GetStarted.Rmd` vignette build
@@ -9,7 +22,7 @@
 
 - Added functionality to change to declare an engine in the model specification function.
 - Updated package dependencies
-- Updated README and citation
+- Updated `README` and citation
 
 # bayesian 0.0.5
 
@@ -40,17 +53,17 @@
 - Fixed building vignettes
 - Support updating more `brms::brm` arguments in model specification
 - Updated documentation and vignettes
-- Updated WORDLIST
+- Updated `WORDLIST`
 - Minor code cleanup
 
 # bayesian 0.0.3
 
-- Added CITATION and updated package DESCRIPTION
+- Added `CITATION` and updated package `DESCRIPTION`
 - Added fit wrapper and other helper functions
 - Renamed the current engine from `stan` to `brms`
-- Updated manual, logo, WORDLIST, and NEWS
+- Updated manual, logo, `WORDLIST`, and `NEWS`
 - Fixed a CRAN NOTE regarding LazyData
-- Updated lifecycle URL in the README
+- Updated lifecycle URL in the `README`
 
 # bayesian 0.0.2
 
@@ -59,8 +72,8 @@
 - Removed the redundant `verbose` argument
 - Fixed CRAN notes and comments
 - Fixed possibly invalid file URL
-- Updated package DESCRIPTION and WORDLIST
-- Updated README and added DOI badge
+- Updated package `DESCRIPTION` and `WORDLIST`
+- Updated `README` and added DOI badge
 - Used CRAN template for MIT license
 
 # bayesian 0.0.1

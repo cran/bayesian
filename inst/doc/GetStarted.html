@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul-Christian Bürkner &amp; Hamada S. Badr" />
 
-<meta name="date" content="2021-09-29" />
+<meta name="date" content="2022-01-20" />
 
 <title>Get started with bayesian</title>
 
@@ -25,6 +25,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -112,7 +113,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Get started with <code>bayesian</code></h1>
 <h4 class="author">Paul-Christian Bürkner &amp; Hamada S. Badr</h4>
-<h4 class="date">2021-09-29</h4>
+<h4 class="date">2022-01-20</h4>
 
 
 
@@ -207,14 +208,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Group-Level Effects: 
 ## ~patient (Number of levels: 59) 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.58      0.07     0.46     0.72 1.00      890     1522
+## sd(Intercept)     0.58      0.07     0.46     0.73 1.00      930     1669
 ## 
 ## Population-Level Effects: 
 ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept     1.78      0.12     1.55     2.00 1.01      683     1247
-## Trt1         -0.27      0.17    -0.60     0.05 1.00      626     1142
-## Base          0.73      0.08     0.57     0.89 1.00      809     1323
-## Age           0.08      0.08    -0.07     0.24 1.00      755     1475
+## Intercept     1.77      0.11     1.54     1.99 1.00      810     1193
+## Trt1         -0.27      0.16    -0.58     0.04 1.00      684     1247
+## Base          0.72      0.08     0.57     0.88 1.01      849     1497
+## Age           0.08      0.08    -0.08     0.25 1.00      783     1315
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -222,8 +223,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>To extract the parsnip model fit from the workflow</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_fit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">extract_fit_parsnip</span>()</code></pre></div>
-<p>The <code>brmsfit</code> object is stored in the <code>fit</code> slot</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_brmsfit &lt;-<span class="st"> </span>epi_fit<span class="op">$</span>fit</code></pre></div>
+<p>The <code>brmsfit</code> object can be extracted as follows</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_brmsfit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">extract_fit_engine</span>()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(epi_brmsfit)</code></pre></div>
 <pre><code>## [1] &quot;brmsfit&quot;</code></pre>
 <p>We can use the trained workflow, which includes the fitted model, to conveniently <code>predict</code> using new data without having to worry about all the data reprocessing, which is automatically applied using the workflow preprocessor (recipe).</p>
@@ -253,11 +255,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## # A tibble: 5 × 3
 ##   .pred_lower .pred_upper .std_error
 ##         &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
-## 1           0           8       2.05
-## 2           0           8       2.10
+## 1           0           8       2.08
+## 2           0           8       2.08
 ## 3           0           7       1.83
-## 4           0           8       2.05
-## 5           6          22       4.09</code></pre>
+## 4           0           8       1.94
+## 5           6          22       4.12</code></pre>
 
 
 

@@ -56,7 +56,8 @@ epi_fit <- epi_workflow_fit %>%
   extract_fit_parsnip()
 
 ## ----eval = run_on_linux------------------------------------------------------
-epi_brmsfit <- epi_fit$fit
+epi_brmsfit <- epi_workflow_fit %>%
+  extract_fit_engine()
 
 ## ----eval = run_on_linux------------------------------------------------------
 class(epi_brmsfit)
