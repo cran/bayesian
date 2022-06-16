@@ -28,11 +28,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
     # -------------------------------------------------------------------------
 
     for (pkg in dependpkgs) {
-      if ("mode" %in% rlang::fn_fmls_names(parsnip::set_dependency)) {
-        parsnip::set_dependency(model, engine, pkg = pkg, mode = mode)
-      } else {
-        parsnip::set_dependency(model, engine, pkg = pkg)
-      }
+      parsnip::set_dependency(model, engine, pkg = pkg, mode = mode)
     }
 
     # -------------------------------------------------------------------------
@@ -103,8 +99,8 @@ bayesian_make <- function(modes = c("classification", "regression")) {
     parsnip::set_model_arg(
       model = model,
       eng = engine,
-      parsnip = "inits",
-      original = "inits",
+      parsnip = "init",
+      original = "init",
       func = fitfunc,
       has_submodel = FALSE
     )
@@ -279,7 +275,7 @@ bayesian_make <- function(modes = c("classification", "regression")) {
       mode = mode,
       value = list(
         interface = "formula",
-        protect = c("formula", "data"),
+        protect = c("formula", "data", "weights"),
         func = fitfunc,
         defaults = list()
       )
@@ -314,12 +310,14 @@ bayesian_make <- function(modes = c("classification", "regression")) {
               rlang::warn('Use `type = "raw"` for multivariate predictions!')
               return(results)
             }
-
+            threshold <- getOption("class_pred.threshold", 0.5)
             if (length(object$lvl) == 2) {
               if (is.array(results)) {
                 results <- as.vector(results)
               }
-              threshold <- getOption("class_pred.threshold", 0.5)
+              if (length(threshold) != 1) {
+                rlang::abort("Probability threshold should be a single value.")
+              }
               if (is.numeric(threshold)) {
                 if (!dplyr::between(threshold, 0, 1)) {
                   rlang::abort("Probability threshold is out of 0-1 range.")
@@ -336,6 +334,9 @@ bayesian_make <- function(modes = c("classification", "regression")) {
               length(object$lvl) > 2 &
                 length(object$lvl) == ncol(results)
             ) {
+              if (length(threshold) == ncol(results)) {
+                results <- sweep(results, 2, threshold, FUN = "/")
+              }
               results <- object$lvl[apply(results, 1, which.max)]
             } else {
               rlang::abort("Unexpected model predictions!")
@@ -365,6 +366,9 @@ bayesian_make <- function(modes = c("classification", "regression")) {
             }
 
             if (length(object$lvl) == 2) {
+              if (is.array(results)) {
+                results <- as.vector(results)
+              }
               results <- tibble::tibble(
                 v1 = 1 - results[, 1],
                 v2 = results[, 1]

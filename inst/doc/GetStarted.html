@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul-Christian Bürkner &amp; Hamada S. Badr" />
 
-<meta name="date" content="2022-01-20" />
+<meta name="date" content="2022-06-16" />
 
 <title>Get started with bayesian</title>
 
@@ -113,7 +113,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Get started with <code>bayesian</code></h1>
 <h4 class="author">Paul-Christian Bürkner &amp; Hamada S. Badr</h4>
-<h4 class="date">2022-01-20</h4>
+<h4 class="date">2022-06-16</h4>
 
 
 
@@ -121,11 +121,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recipes)
 <span class="kw">library</span>(workflows)</code></pre></div>
 <p>As a simple example, we will model the seizure counts in epileptic patients to investigate whether the treatment (represented by variable <code>Trt</code>) can reduce the seizure counts and whether the effect of the treatment varies with the baseline number of seizures a person had before treatment (variable <code>Base</code>) and with the age of the person (variable <code>Age)</code>. As we have multiple observations per <code>person</code>, a group-level intercept is incorporated to account for the resulting dependency in the data. In a first step, we use the <code>recipes</code> package to prepare (a recipe for) the <code>epilepsy</code> data. This data set is shipped with the <code>brms</code> package, which is automatically loaded by <code>bayesian</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_recipe &lt;-<span class="st"> </span>epilepsy <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">recipe</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">update_role</span>(count, <span class="dt">new_role =</span> <span class="st">&quot;outcome&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">update_role</span>(Trt, Age, Base, patient, <span class="dt">new_role =</span> <span class="st">&quot;predictor&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_role</span>(patient, <span class="dt">new_role =</span> <span class="st">&quot;group&quot;</span>) <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_recipe &lt;-<span class="st"> </span>epilepsy <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">recipe</span>() <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">update_role</span>(count, <span class="dt">new_role =</span> <span class="st">&quot;outcome&quot;</span>) <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">update_role</span>(Trt, Age, Base, patient, <span class="dt">new_role =</span> <span class="st">&quot;predictor&quot;</span>) <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">add_role</span>(patient, <span class="dt">new_role =</span> <span class="st">&quot;group&quot;</span>) <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">step_normalize</span>(Age, Base)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(epi_recipe)</code></pre></div>
 <pre><code>## Recipe
@@ -145,8 +145,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Above, we not only define the roles of the relevant variables but also normalized the <code>Age</code> and <code>Base</code> predictors to facilitate model fitting later on. In the next step, we use <code>bayesian</code> to set up a basic model structure.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_model &lt;-<span class="st"> </span><span class="kw">bayesian</span>(
     <span class="dt">family =</span> <span class="kw">poisson</span>()
-  ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;brms&quot;</span>) <span class="op">%&gt;%</span>
+  ) <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;brms&quot;</span>) <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(epi_model)</code></pre></div>
 <pre><code>## Bayesian Model Specification (regression)
@@ -156,11 +156,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 
 ## Computational engine: brms</code></pre>
 <p>The <code>bayesian</code> function is the main function of the package to initialize a Bayesian model. We can set up a lot of the information directly within the function or update the information later on, via the <code>update</code> method. For example, if we didn't specify the family initially or set it to something else that we now wanted to change, we could use the <code>update</code> method as follows</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_model &lt;-<span class="st"> </span>epi_model <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_model &lt;-<span class="st"> </span>epi_model <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">update</span>(<span class="dt">family =</span> <span class="kw">poisson</span>())</code></pre></div>
 <p>Next, we define a workflow via the <code>workflows</code> package, by combining the above defined data processing recipe and the model plus the actual model formula to be passed to the <code>brms</code> engine.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_recipe</span>(epi_recipe) <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">|</span><span class="er">&gt;</span>
+<span class="st">  </span><span class="kw">add_recipe</span>(epi_recipe) <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">add_model</span>(
     <span class="dt">spec =</span> epi_model,
     <span class="dt">formula =</span> count <span class="op">~</span><span class="st"> </span>Trt <span class="op">+</span><span class="st"> </span>Base <span class="op">+</span><span class="st"> </span>Age <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>patient)
@@ -183,7 +183,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 
 ## Computational engine: brms</code></pre>
 <p>We are now ready to fit the model by calling the <code>fit</code> method with the data set we want to train the model on.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit &lt;-<span class="st"> </span>epi_workflow <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit &lt;-<span class="st"> </span>epi_workflow <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">fit</span>(<span class="dt">data =</span> epilepsy)</code></pre></div>
 <pre><code>## Compiling Stan program...</code></pre>
 <pre><code>## Start sampling</code></pre>
@@ -208,29 +208,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Group-Level Effects: 
 ## ~patient (Number of levels: 59) 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.58      0.07     0.46     0.73 1.00      930     1669
+## sd(Intercept)     0.58      0.07     0.46     0.73 1.01      752     1073
 ## 
 ## Population-Level Effects: 
 ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept     1.77      0.11     1.54     1.99 1.00      810     1193
-## Trt1         -0.27      0.16    -0.58     0.04 1.00      684     1247
-## Base          0.72      0.08     0.57     0.88 1.01      849     1497
-## Age           0.08      0.08    -0.08     0.25 1.00      783     1315
+## Intercept     1.77      0.12     1.53     1.99 1.00      688     1099
+## Trt1         -0.27      0.16    -0.60     0.05 1.00      603     1116
+## Base          0.73      0.08     0.58     0.89 1.00      699     1210
+## Age           0.08      0.09    -0.09     0.25 1.01      623     1125
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>To extract the parsnip model fit from the workflow</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_fit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_fit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">extract_fit_parsnip</span>()</code></pre></div>
 <p>The <code>brmsfit</code> object can be extracted as follows</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_brmsfit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_brmsfit &lt;-<span class="st"> </span>epi_workflow_fit <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">extract_fit_engine</span>()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(epi_brmsfit)</code></pre></div>
 <pre><code>## [1] &quot;brmsfit&quot;</code></pre>
 <p>We can use the trained workflow, which includes the fitted model, to conveniently <code>predict</code> using new data without having to worry about all the data reprocessing, which is automatically applied using the workflow preprocessor (recipe).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newdata &lt;-<span class="st"> </span>epilepsy[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, ]</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">predict</span>(
     <span class="dt">new_data =</span> newdata,
     <span class="dt">type =</span> <span class="st">&quot;conf_int&quot;</span>,
@@ -245,7 +245,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 4           0           8
 ## 5           6          22</code></pre>
 <p>To add the standard errors on the scale of the linear predictors</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">epi_workflow_fit <span class="op">|</span><span class="er">&gt;</span>
 <span class="st">  </span><span class="kw">predict</span>(
     <span class="dt">new_data =</span> newdata,
     <span class="dt">type =</span> <span class="st">&quot;conf_int&quot;</span>,
@@ -255,11 +255,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## # A tibble: 5 × 3
 ##   .pred_lower .pred_upper .std_error
 ##         &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
-## 1           0           8       2.08
+## 1           0           8       2.11
 ## 2           0           8       2.08
-## 3           0           7       1.83
-## 4           0           8       1.94
-## 5           6          22       4.12</code></pre>
+## 3           0           7       1.81
+## 4           0           8       2.02
+## 5           6          23       4.13</code></pre>
 
 
 
