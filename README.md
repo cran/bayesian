@@ -20,7 +20,7 @@ Status](https://www.r-pkg.org/badges/version/bayesian)](https://CRAN.R-project.o
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/bayesian)](https://cran.r-project.org/package=bayesian)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/hsbadr/bayesian/blob/main/LICENSE.md)
-[![DOI](https://zenodo.org/badge/327419436.svg)](https://zenodo.org/badge/latestdoi/327419436)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4426836.svg)](https://zenodo.org/doi/10.5281/zenodo.4426836)
 <!-- badges: end -->
 
 [**`bayesian`**](https://hsbadr.github.io/bayesian/) supports Bayesian
@@ -67,7 +67,7 @@ To cite `bayesian` in publications, please use:
 
     citation("bayesian")
 
-> Hamada S. Badr and Paul C. Bürkner (2021): bayesian: Bindings for
+> Hamada S. Badr and Paul C. Bürkner (2024): bayesian: Bindings for
 > Bayesian TidyModels, [*Comprehensive R Archive Network
 > (CRAN)*](https://cran.r-project.org/package=bayesian). URL:
 > <https://hsbadr.github.io/bayesian/>.
@@ -80,7 +80,7 @@ By contributing to this project, you agree to abide by its terms.
 
 -   For questions and discussions about tidymodels packages, modeling,
     and machine learning, please [post on RStudio
-    Community](https://community.rstudio.com/).
+    Community](https://forum.posit.co/).
 
 -   If you think you have encountered a bug, please [submit an
     issue](https://github.com/hsbadr/bayesian/issues).

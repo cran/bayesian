@@ -130,8 +130,10 @@ bayesian <-
       args = args,
       eng_args = NULL,
       mode = mode,
+      user_specified_mode = !missing(mode),
       method = NULL,
-      engine = engine
+      engine = engine,
+      user_specified_engine = !missing(engine)
     )
   }
 
@@ -325,25 +327,6 @@ bayesian_fit <- function(formula, data, ...) {
     }
   }
   dots$formula.override <- NULL
-
-  # Simplify and expose the family call
-  if (inherits(dots$family, c("family", "brmsfamily"))) {
-    family_chr <- purrr::map_lgl(dots$family, is.character)
-    family_func <- ifelse(
-      inherits(dots$family, "brmsfamily"),
-      "brmsfamily",
-      dots$family$family
-    )
-    family_fmls <- rlang::fn_fmls_names(
-      get(
-        family_func,
-        mode = "function"
-      )
-    )
-    family_chrs <- intersect(names(family_chr[family_chr]), family_fmls)
-    family_args <- dots$family[family_chrs]
-    dots$family <- rlang::call2(family_func, !!!family_args)
-  }
 
   # Pass extra arguments to Stan
   dots <- append(dots, dots$stan_args)

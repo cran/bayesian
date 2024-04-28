@@ -113,7 +113,7 @@ linear \code{gaussian} model is applied. In multivariate models,
 
 \item{prior}{One or more \code{brmsprior} objects created by
 \code{\link[brms]{set_prior}} or related functions and combined using the
-\code{c} method or the \code{+} operator. See also  \code{\link[brms]{get_prior}}
+\code{c} method or the \code{+} operator. See also \code{\link[brms:default_prior.default]{default_prior}}
 for more help.}
 
 \item{sample_prior}{Indicate if draws from priors should be drawn
@@ -228,7 +228,7 @@ named after the string supplied in \code{save_model}.}
 \item{file}{A character string of the file path to \code{brmsfit} object
 saved via \code{\link{saveRDS}}.}
 
-\item{file_refit}{Modifies when the fit stored via the \code{file} parameter
+\item{file_refit}{Modifies when the fit stored via the \code{file} argument
 is re-used. Can be set globally for the current \R session via the
 \code{"brms.file_refit"} option (see \code{\link{options}}).
 For \code{"never"} (default) the fit is always loaded if it
